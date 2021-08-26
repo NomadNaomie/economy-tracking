@@ -18,10 +18,12 @@ const svg = d3.select("#chord")
     .append("g")
     .attr("transform", "translate(400,400)")
 
+var clear_button = document.getElementById("clear-driver")
 var active = true; //Unused for now, will control when to cycle the ribbon
 var timer; //Timeout to restart the cycling after hovering
-var inde; //Index variable for the ribbons animation
-var doCycle = false; //Controls whether the ribbons animate
+var inde = 0; //Index variable for the ribbons animation
+var doCycle = true; //Controls whether the ribbons animate
+var stall = false; //If dropdown is active.
 //TODO : Fix the hover and dropdown triggering the timeout in fade funcs
 function cycle_ribbon_driver(){
     /*
@@ -102,6 +104,19 @@ for (var h in hermits) {
     hermit_dropdown.appendChild(option);
 }
 
+var stop_button = document.getElementById("stop-anim");
+stop_button.addEventListener("click", stop_animation);
+function stop_animation() {
+        stall = !stall;
+        if (stall) {
+            stop_button.innerHTML = "Play Animation";
+        }
+        else {
+            stop_button.innerHTML = "Stop Animation";
+            setTimeout(cycle_ribbon_driver, 1500);
+        }
+}
+
 //There are A LOT of ribbons, so we need so so so many colours
 //TODO : generate a random HSV where H,S are both 100
 var colours = d3.schemePastel1.concat(d3.schemePastel1,d3.schemeSet1,d3.schemeSet2,d3.schemeSet3,d3.schemeAccent,d3.schemeDark2,d3.schemePaired,d3.schemePastel2,d3.schemeSet1,d3.schemeSet3,d3.schemePastel1,d3.schemeSet1,d3.schemeSet2,d3.schemeSet3,d3.schemeAccent,d3.schemeDark2,d3.schemePaired,d3.schemePastel2,d3.schemeSet1,d3.schemeSet3,d3.schemePastel1,d3.schemeSet1,d3.schemeSet2,d3.schemeSet3,d3.schemeAccent,d3.schemeDark2,d3.schemePaired,d3.schemePastel2,d3.schemeSet1,d3.schemeSet3);
@@ -110,8 +125,8 @@ var colours = d3.schemePastel1.concat(d3.schemePastel1,d3.schemeSet1,d3.schemeSe
 const res = d3.chordDirected()
     .padAngle(0.1) // padding between entities (black arc)
     .sortChords(function(a,b) {return a>b;}) //Sorts the Z index of the chords
-    //.sortGroups(function(a,b) {return 1;})
-    .sortSubgroups(function(a,b) {return b.index<a.index;}) //Sorts the order of the chords connecting to the outer arc
+    .sortGroups(function(a,b) {return b.index>a.index;})
+    //.sortSubgroups(function(a,b) {return b.index>a.index;}) //Sorts the order of the chords connecting to the outer arc
     (matrix)
 
 //Add outer arcs of the circle
@@ -134,6 +149,7 @@ svg
     .on("mouseover", fade(0.1))
     .on("mouseout", fade(1));
 
+
 //Add labels to the outer arcs
 //Takes the median angle of the chord and rotates the text according to:
 //180<x<0 -> rotate(90), otherwise rotate(270)
@@ -154,6 +170,7 @@ svg.append("g").selectAll("text")
     .attr('dy', '.2em')
     .attr('text-anchor', 'middle')
     .attr('class', 'group-label')
+    .style("fill", function(d, i) { return "#fff" })
     .text(function(d) { return hermits[d.index] })
 
 //Ribbon with direction pointing\
@@ -184,24 +201,35 @@ setInterval(function(){
     *   This should NOT run while the user is hovering over a chord or arc, or for roughly 15 seconds after
     *   This should NOT run while a dropdown item is selected.
     */
-    if (doCycle===true){
-    ribs.filter(function(d){console.log(d);return 1;}).transition()
-    .style("opacity", 0.95);
-    ribs.filter(function(d){return d.target.index !=inde && d.source.index != inde}).transition()
-    .style("opacity", 0.1); 
-    inde++;
-    if (inde>=25){inde=0}}else{return;}
+    if (doCycle===true && stall===false){
+        ribs.filter(function(d){return 1;}).transition()
+        .style("opacity", 0.95);
+        ribs.filter(function(d){return d.target.index !=inde && d.source.index != inde}).transition()
+        .style("opacity", 0.1); 
+        inde++;
+        if (inde>=25){inde=0}}else{return;}
 }, 1550);
 hermit_dropdown.addEventListener("change", function() {
     /*
     * This function should fade other hermits permanently until cleared.   
     */
-    ribs.filter(function(d){console.log(d);return 1;}).transition()
+   if (!stall){stop_animation();}
+    ribs.filter(function(d){return 1;}).transition()
     .style("opacity", 0.95);
     doCycle = false;
     var hermit = hermit_dropdown.value;
-    console.log(hermits.indexOf(hermit));
+    if (hermit==""){ribs.filter(function(d){return 1;}).transition()
+    .style("opacity", 0.95);return;}
     ribs.filter(function(d){return d.target.index != hermits.indexOf(hermit) && d.source.index!=hermits.indexOf(hermit);}).transition().style("opacity", 0.1);
+});
+clear_button.addEventListener("click", function() {
+    if (!stall){
+        stop_animation();
+    }
+    hermit_dropdown.value = "Select Hermit";
+    ribs.filter(function(d){return 1;}).transition()
+    .style("opacity", 1);
+    hermit_dropdown.dispatchEvent(new Event("change"));
 });
 function fade(opacity) {
     /*
@@ -211,7 +239,7 @@ function fade(opacity) {
         clearTimeout(timer); //Resets timer cooldown
         doCycle=false;
         svg.selectAll("g path").filter(function(d){return 1;}).transition().style("opacity", 0.95);
-        //timer=setTimeout((cycle_ribbon_driver),40000); //Wait 40s before restarting cycle
+        timer=setTimeout((cycle_ribbon_driver),4*1000);
         ribs
             .filter(function(d) {
 
@@ -230,8 +258,7 @@ function fade_single(opacity) {
     return function() {
         clearTimeout(timer);
         doCycle=false;
-        //timer=setTimeout((cycle_ribbon_driver),10000);
-        console.log('debug');
+        timer=setTimeout((cycle_ribbon_driver),4*1000);
         svg.selectAll("g path").filter(function(d){return 1;}).transition().style("opacity", 0.95);
         var me = this;
         svg.selectAll("g path")

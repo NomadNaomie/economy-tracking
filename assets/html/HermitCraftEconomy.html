@@ -7,6 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hermitcraft Season 8 Economy</title>
     <link rel="stylesheet" href="assets/css/econ.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
+        </style> 
 </head>
 <body>
     <div id="datavisstory">
@@ -17,11 +20,14 @@
             <div id="funky-balls"></div>
         </div>
         <div id="chord">
-            <select name="hermitsChord" id="hermit-chord-dropdown"></select>
+            <select name="hermitsChord" id="hermit-chord-dropdown">
+            </select>
+            <button id="clear-driver">Clear Selection</button>
+            <button id="stop-anim">Stop Animation</button>
             <div id="tooltip"></div>
         </div>
-        <div id="chordText" class="expText"><div class="explainer">This chord diagram represents the flow of diamonds between hermits. You can hover over a hermit's name to see all transactions in and out or hover over an individual ribbon to see how many diamonds transferred between 2 specific hermits within a season.</div></div>
-        <div id="sankeyText" class="expText"><div class="explainer">This diagram represents the flow of diamonds in a different way, you can reposition the names to clearly see the connections between spending</div></div>
+        <div id="chordText" class="expText"><div class="explainer">This chord diagram represents the flow of diamonds between hermits. <br> <br> You can hover over a hermit's name to see all transactions in and out or hover over an individual ribbon to see how many diamonds transferred between 2 specific hermits during Season 8. <br> <br> Selecting a hermit in the dropdown will highlight transactions between them and other hermits without having to hover. </div></div>
+        <div id="sankeyText" class="expText"><div class="explainer">This Sankey diagram is another way of representing the flow of diamonds between hermits.<br><br> You can find your favourite hermit and trace the lines from the Payers (The ones who spend the diamonds) to the Payee (The ones who receive the diamonds.) This way you can easily track how many diamonds were traded between 2 hermits over the whole season indicated by the thickness of the ribbon connecitng them, as well as a really good indication of how much a hermit spent and received in total over the season indicated by the height of their bars on the left and right.</div></div>
         <div id="sankey"><p id="sankey-payer">Payer</p> <p id="sankey-payee">Payee</p></div>
         <div id="earners">
             <h2>The Top Earning Hermits are:</h2>
@@ -47,7 +53,15 @@
 
         </div>
         <div id="pie"></div>
-        <div id="bar-chart-race"></div>
+        <div id="pyramid">
+            <div id="pyramid-header">
+            <h3 id="pyramid-stream">On Stream</h3>
+            <h3 id="pyramid-video">In videos</h3></div>
+        </div>
+        <div id="pyramid-text">
+            <h1>Where do Hermits spend their money anyway?</h1>
+            This pyramid graph is a visualisation of where hermits spend their diamonds, in terms of on stream or in videos according to our tracking. Each hermit has 2 bars, one representing what percent of their total diamonds spend were on stream and how many were in a video. 
+        </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://d3js.org/d3.v6.js"></script>
@@ -57,6 +71,7 @@
         <script Content-Type="text/javascript" src="./assets/js/clientMagic.js"></script>
         <script Content-Type="text/javascript" src="./assets/js/treemap.js"></script>
         <script Content-Type="text/javascript" src="./assets/js/pie.js"></script>
+        <script Content-Type="text/javascript" src="./assets/js/pyramid.js"></script>
         <!-- <script Content-Type="text/javascript" src="./assets/js/BarChartRace.js"></script> -->
         <!-- <script src="spanky.js"></script> -->
 

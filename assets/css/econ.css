@@ -7,11 +7,25 @@
   pointer-events: none;
   font: 2vh sans-serif;
 }
-
+*{
+  font-family: 'Montserrat', sans-serif;
+  color:white;
+}
 #hermit-chord-dropdown {
   float: left;
+  color:black;
+  margin-left:.5vw;
 }
-
+#clear-driver{
+  margin-left:1vw;
+  float:left;
+  color:black;
+}
+#stop-anim{
+  margin-left:1vw;
+  float:left;
+  color:black;
+}
 #funky-balls {
   display: flex;
   justify-content: center;
@@ -29,18 +43,26 @@
 }
 #sankey-payer {
   float: left;
-  margin-left: 2vw;
+  margin-left: 12vw;
   color: white;
-}
+  font-size: 1.5vw;
 
+}
+#sankeyText{
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
 #sankey-payee {
   float: right;
-  margin-right: 2vw;
+  margin-right: 12vw;
   color: white;
+  font-size: 1.5vw;
 }
 
 #sankey {
   clear: both;
+  grid-column-start: 1;
+  grid-column-end: 3;
 }
 
 .link:hover {
@@ -138,5 +160,25 @@ html::-webkit-scrollbar {
 }
 
 .chord {
+  clear:both;
   font-size: .1vw;
+}
+#select-driver{
+  color:darkcyan;
+}
+#pyramid-stream{
+  float:left;
+  color:white;
+  margin-left:10vw;
+}
+#pyramid-video{
+  float:right;
+  color:white;
+  margin-right:10vw;
+}
+#pyramid-header{
+clear:both;
+}
+.tick{
+  font-size: 1vw;
 }
