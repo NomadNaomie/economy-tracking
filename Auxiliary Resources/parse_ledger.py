@@ -1,10 +1,12 @@
 # Helper Python File to convert the ledger format of an extracted Google Sheets CSV 
-# to a JSON file that can be used by D3.
-# For use with Sankey.js  
-#
+# to JSON files that can be used by D3.
+# Cols: 
+# 0:Empty 1:Payer 2:Amount 3:Payee 4:Shop 5:Uploader 6:Medium 7:Upload date 8:Notes 9-11:Trackers
 import csv
 import os
-csvfile = open('ledger.csv', 'r', newline='')
+import json
+
+csvfile = open('../assets/data/ledger.csv', 'r', newline='')
 payers = {}
 payees = {}
 data = {
@@ -26,7 +28,40 @@ for row in csvfile:
         try:
             data['links'].append({"source": payers[row_arr[1]], "target": payees[row_arr[3]], "value": float(row_arr[2])})
         except Exception as E:
-            print("{0} at row {1}".format(  E, row_arr[0]))
+            pass
 
 with open("sankey.json","w") as outfile:
-    outfile.write(str(data))
+    outfile.write(json.dumps(data, indent=4))
+    print("Sankey JSON saved to disk")
+
+del data
+del payers
+del payees
+
+hermits = []
+streamTotal = {}
+videoTotal = {}
+csvfile.seek(0)
+for row in csvfile:
+    row_arr = row.split(',')
+    if row_arr[1] != 'Payer' and row_arr[1]!="": # Ignore the header row
+        if row_arr[1] not in hermits and row_arr[3] != '':
+            hermits.append(row_arr[1])
+            streamTotal[row_arr[1]] = 0
+            videoTotal[row_arr[1]] = 0
+        if row_arr[3] not in hermits and row_arr[3] != '':
+            hermits.append(row_arr[3])
+            streamTotal[row_arr[3]] = 0
+            videoTotal[row_arr[3]] = 0
+        if row_arr[6] == "Stream":
+            streamTotal[row_arr[3]] = float(row_arr[2])
+        else:
+            videoTotal[row_arr[3]] = float(row_arr[2])
+
+data = []
+for hermit in hermits:
+    data.append({"name":hermit,"medium":"stream", "amount":streamTotal[hermit]})
+    data.append({"name":hermit,"medium":"video", "amount":videoTotal[hermit]})
+with open("pyramid.json","w") as outfile:
+    outfile.write(json.dumps(data, indent=4))
+    print("Pyramid JSON saved to disk")
