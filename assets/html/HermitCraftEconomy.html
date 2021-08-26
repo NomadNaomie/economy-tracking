@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hermitcraft Season 8 Economy</title>
+    <link rel="stylesheet" href="assets/css/econ.css">
+</head>
+<body>
+    <div id="datavisstory">
+        <div id="intro">
+            <h1>Hermitcraft <b>Season 8 Economy</b></h1>
+            <h2>Introduction</h2>
+            <p>This Project is made in colloboration with <a href="#credits">these</a> trackers, who each recorded the various transactions of Hermitcraft members. We were only interested in transactions that were made with diamonds. All episodes from each hermit were checked and we incorporated as many livestreams as we could. </p>
+            <div id="funky-balls"></div>
+        </div>
+        <div id="chord">
+            <select name="hermitsChord" id="hermit-chord-dropdown"></select>
+            <div id="tooltip"></div>
+        </div>
+        <div id="chordText" class="expText"><div class="explainer">This chord diagram represents the flow of diamonds between hermits. You can hover over a hermit's name to see all transactions in and out or hover over an individual ribbon to see how many diamonds transferred between 2 specific hermits within a season.</div></div>
+        <div id="sankeyText" class="expText"><div class="explainer">This diagram represents the flow of diamonds in a different way, you can reposition the names to clearly see the connections between spending</div></div>
+        <div id="sankey"><p id="sankey-payer">Payer</p> <p id="sankey-payee">Payee</p></div>
+        <div id="earners">
+            <h2>The Top Earning Hermits are:</h2>
+            <ol>
+                <li class="fade-in">Grian - 81</li>
+                <li class="fade-in">Keralis - 18</li>
+                <li class="fade-in">JoeHills - 6</li>
+                <li class="fade-in">Tango - 4</li>
+            </ol>
+        </div>
+        <div id="earnText" class="expText"><div class="explainer">From the very beginning of the season, Grian's G-Train was a very big money maker. Keralis, relying on his villagers was able to make a fortune by selling books</div></div>
+        <div id="spendText" class="expText"><div class="explainer">Keralis, being both a large earner and spender in the Hermit economy contributed a lot to the diamond flow</div></div>
+        <div id="spenders">
+            <h2>The Top Spending Hermits Are:</h2>
+            <ol>
+                <li class="fade-in">xB - 30</li>
+                <li class="fade-in">Wels - 22</li>
+                <li class="fade-in">Beef - 20</li>
+                <li class="fade-in">Cleo - 10</li>
+            </ol>
+        </div>
+        <div id="treemap">
+
+        </div>
+        <div id="pie"></div>
+        <div id="bar-chart-race"></div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://d3js.org/d3.v6.js"></script>
+        <script src="https://unpkg.com/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
+        <script Content-Type="text/javascript" src="./assets/js/chord.js" type="module"></script>
+        <script Content-Type="text/javascript" src="./assets/js/sankey.js"></script>
+        <script Content-Type="text/javascript" src="./assets/js/clientMagic.js"></script>
+        <script Content-Type="text/javascript" src="./assets/js/treemap.js"></script>
+        <script Content-Type="text/javascript" src="./assets/js/pie.js"></script>
+        <!-- <script Content-Type="text/javascript" src="./assets/js/BarChartRace.js"></script> -->
+        <!-- <script src="spanky.js"></script> -->
+
+</body>
+
+</html>

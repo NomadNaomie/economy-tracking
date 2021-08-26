@@ -1,0 +1,142 @@
+.node rect {
+  fill-opacity: .9;
+  shape-rendering: crispEdges;
+}
+
+.node text {
+  pointer-events: none;
+  font: 2vh sans-serif;
+}
+
+#hermit-chord-dropdown {
+  float: left;
+}
+
+#funky-balls {
+  display: flex;
+  justify-content: center;
+}
+.ball{
+  margin:0;
+}
+.link {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .2;
+}
+#tree-rect{
+  margin:2vw;
+}
+#sankey-payer {
+  float: left;
+  margin-left: 2vw;
+  color: white;
+}
+
+#sankey-payee {
+  float: right;
+  margin-right: 2vw;
+  color: white;
+}
+
+#sankey {
+  clear: both;
+}
+
+.link:hover {
+  stroke-opacity: .5;
+}
+
+.chord path {
+  fill-opacity: .67;
+  stroke: #000;
+  stroke-width: .5px;
+}
+
+#intro {
+  display: block;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 4vh;
+}
+
+@font-face {
+  font-family: "Organo";
+  src: URL('Organo.ttf') format('truetype');
+}
+
+#sankey svg {
+  width: auto;
+  height: fit-content;
+}
+
+#chord svg {
+  width: auto;
+  height: fit-content;
+}
+
+body {
+  overflow: scroll;
+}
+
+#intro p {
+  width: 30%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  margin-bottom: 20vh;
+}
+
+.fade-in {
+  opacity: 0;
+}
+
+#datavisstory {
+  display: grid;
+  grid-template-columns: auto, auto;
+  grid-gap: 2vh;
+  background-color: #2196F3;
+  padding: 2vh;
+  background-image: url("/assets/images/MCBGScroll.png");
+  background-attachment: scroll;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+  overflow-y: scroll;
+}
+
+#intro {
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+#datavisstory>div {
+  background-color: rgba(255, 255, 255, 0.4);
+  padding: 2vh 0;
+  font-size: 2vh;
+  text-align: center;
+}
+
+.expText {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.explainer {
+  width: 50%;
+}
+
+html {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
+}
+
+.chord {
+  font-size: .1vw;
+}
