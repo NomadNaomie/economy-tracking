@@ -49,7 +49,7 @@ d3.json("/assets/data/sankey.json").then(function (sankeydata) {
         .enter().append("path")
         .attr("class", "link")
         .attr("d", d3.sankeyLinkHorizontal())
-        .attr("stroke-width", function (d) { return Math.max(1, d.value == 60 ? d.value : 60) })
+        .attr("stroke-width", function (d) { return Math.max(1, d.value < 60 ? d.value : 60) })
     //Adding the hover text to each ribbon
     link.append("title")
         .text(function (d) {
