@@ -30,7 +30,7 @@ for row in csvfile:
         except Exception as E:
             pass
 
-with open("sankey.json","w") as outfile:
+with open("../assets/data/sankey.json","w") as outfile:
     outfile.write(json.dumps(data, indent=4))
     print("Sankey JSON saved to disk")
 
@@ -54,14 +54,16 @@ for row in csvfile:
             streamTotal[row_arr[3]] = 0
             videoTotal[row_arr[3]] = 0
         if row_arr[6] == "Stream":
-            streamTotal[row_arr[3]] = float(row_arr[2])
+            streamTotal[row_arr[1]] = float(row_arr[2])
         else:
-            videoTotal[row_arr[3]] = float(row_arr[2])
+            videoTotal[row_arr[1]] = float(row_arr[2])
 
 data = []
+i = 0
 for hermit in hermits:
-    data.append({"name":hermit,"medium":"stream", "amount":streamTotal[hermit]})
-    data.append({"name":hermit,"medium":"video", "amount":videoTotal[hermit]})
-with open("pyramid.json","w") as outfile:
+    i+=5
+    data.append({"name":hermit,"medium":"stream", "amount":streamTotal[hermit], "index":i})
+    data.append({"name":hermit,"medium":"video", "amount":videoTotal[hermit],"index":i})
+with open("../assets/data/pyramid.json","w") as outfile:
     outfile.write(json.dumps(data, indent=4))
     print("Pyramid JSON saved to disk")
