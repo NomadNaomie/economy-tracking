@@ -9,7 +9,7 @@
 var graph;
 var link;
 var margin = { top: 10, right: 10, bottom: 10, left: 10 },
-    width = 900 - margin.left - margin.right,
+    width = 1400 - margin.left - margin.right,
     height = 2500 - margin.top - margin.bottom;
 
 var formatNumber = d3.format(",.0f"), // zero decimal places
@@ -49,7 +49,7 @@ d3.json("/assets/data/sankey.json").then(function (sankeydata) {
         .enter().append("path")
         .attr("class", "link")
         .attr("d", d3.sankeyLinkHorizontal())
-        .attr("stroke-width", function (d) { return Math.max(1, d.value < 60 ? d.value : 60) })
+        .attr("stroke-width", function (d) { return Math.max(1, d.value < 80 ? d.value / 2 : 40) })
     //Adding the hover text to each ribbon
     link.append("title")
         .text(function (d) {
@@ -106,8 +106,6 @@ function dragmove(evt, d) {
     d.x1 = d.x1 + 0;
     d.x0 = d.x0 + 0;
     var yTranslate = (d.y0-d.y1)+parseInt(rectY);
-    console.log(d.y0);
-    console.log(yTranslate);
     if (d.y1+yTranslate > height || d.y0 < 0) {
         yTranslate = last_valid_y;
     }else{
