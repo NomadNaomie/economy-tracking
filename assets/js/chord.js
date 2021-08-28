@@ -113,7 +113,7 @@ function stop_animation() {
         }
         else {
             stop_button.innerHTML = "Stop Animation";
-            setTimeout(cycle_ribbon_driver, 1500);
+            setTimeout(cycle_ribbon_driver, 4*1000);
         }
 }
 
