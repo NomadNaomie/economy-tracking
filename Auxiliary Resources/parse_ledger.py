@@ -5,6 +5,7 @@
 import csv
 import os
 import json
+import datetime
 
 csvfile = open('../assets/data/ledger.csv', 'r', newline='')
 payers = {}
@@ -16,7 +17,7 @@ data = {
 id = 0
 for row in csvfile:
     row_arr = row.split(',')
-    if row_arr[1] != 'Payer': # Ignore the header row
+    if row_arr[1] != 'Payer' : # Ignore the header row
         if row_arr[1] not in payers and row_arr[1] != '':
             payers[row_arr[1]] = id
             data['nodes'].append({"node":id,"name":row_arr[1]})
@@ -67,3 +68,27 @@ for hermit in hermits:
 with open("../assets/data/pyramid.json","w") as outfile:
     outfile.write(json.dumps(data, indent=4))
     print("Pyramid JSON saved to disk")
+
+del data
+del streamTotal
+del videoTotal
+
+data = {}
+running_total = dict.fromkeys(hermits, 0)
+csvfile.seek(0)
+
+for row in csvfile:
+    row_arr = row.split(',')
+    if row_arr[1] != 'Payer' and row_arr[1]!="": # Ignore the header row
+        date = datetime.datetime.strptime(row_arr[7], '%Y-%m-%d') 
+        month_year_str = date.strftime('%B %Y')
+        if month_year_str not in data:
+            data[month_year_str] = []
+            for hermit in hermits:
+                data[month_year_str].append({"Hermit":hermit,"Total":running_total[hermit]})
+        running_total[row_arr[3]] += float(row_arr[2])
+        data[month_year_str][hermits.index(row_arr[3])]["Total"] += float(row_arr[2])
+
+with open("../assets/data/racing_bars.json","w") as outfile:
+    outfile.write(json.dumps(data, indent=4))
+    print("Transactions JSON saved to disk")

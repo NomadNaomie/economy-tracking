@@ -26,41 +26,64 @@
             <button id="stop-anim">Stop Animation</button>
             <div id="tooltip"></div>
         </div>
-        <div id="chordText" class="expText"><div class="explainer">This chord diagram represents the flow of diamonds between hermits. <br> <br> You can hover over a hermit's name to see all transactions in and out or hover over an individual ribbon to see how many diamonds transferred between 2 specific hermits during Season 8. <br> <br> Selecting a hermit in the dropdown will highlight transactions between them and other hermits without having to hover. </div></div>
-        <div id="sankeyText" class="expText"><div class="explainer">This Sankey diagram is another way of representing the flow of diamonds between hermits.<br><br> You can find your favourite hermit and trace the lines from the Payers (The ones who spend the diamonds) to the Payee (The ones who receive the diamonds.) This way you can easily track how many diamonds were traded between 2 hermits over the whole season indicated by the thickness of the ribbon connecitng them, as well as a really good indication of how much a hermit spent and received in total over the season indicated by the height of their bars on the left and right.</div></div>
+        <div id="chordText" class="expText"><div class="explainer"><h3>Who is trading with who?</h3>This chord diagram represents the flow of diamonds between hermits. <br> <br> You can hover over a hermit's name to see all transactions in and out or hover over an individual ribbon to see how many diamonds transferred between 2 specific hermits during Season 8. <br> <br> Selecting a hermit in the dropdown will highlight transactions between them and other hermits without having to hover. </div></div>
+        <div id="sankeyText" class="expText"><div class="explainer"><h3>Who is trading with who 2?</h3>This Sankey diagram is another way of representing the flow of diamonds between hermits.<br><br> You can find your favourite hermit and trace the lines from the Payers (The ones who spend the diamonds) to the Payee (The ones who receive the diamonds.) This way you can easily track how many diamonds were traded between 2 hermits over the whole season indicated by the thickness of the ribbon connecitng them, as well as a really good indication of how much a hermit spent and received in total over the season indicated by the height of their bars on the left and right.</div></div>
         <div id="sankey"><p id="sankey-payer">Payer</p> <p id="sankey-payee">Payee</p></div>
         <div id="earners">
             <h2>The Top Earning Hermits are:</h2>
             <ol>
-                <li class="fade-in">Grian - 81</li>
-                <li class="fade-in">Keralis - 18</li>
-                <li class="fade-in">JoeHills - 6</li>
-                <li class="fade-in">Tango - 4</li>
+                <li class="fade-in">Grian - 362</li>
+                <li class="fade-in">Impulse - 221</li>
+                <li class="fade-in">Tango - 197 and ⅓</li>
+                <li class="fade-in">Keralis - 116 and ⅓</li>
             </ol>
         </div>
         <div id="earnText" class="expText"><div class="explainer">From the very beginning of the season, Grian's G-Train was a very big money maker. Keralis, relying on his villagers was able to make a fortune by selling books</div></div>
-        <div id="spendText" class="expText"><div class="explainer">Keralis, being both a large earner and spender in the Hermit economy contributed a lot to the diamond flow</div></div>
+        <div id="spendText" class="expText"><div class="explainer">Impulse, with his factory was able to not only generate significant revenue, but funneled it right back into the local economy.</div></div>
         <div id="spenders">
             <h2>The Top Spending Hermits Are:</h2>
             <ol>
-                <li class="fade-in">xB - 30</li>
-                <li class="fade-in">Wels - 22</li>
-                <li class="fade-in">Beef - 20</li>
-                <li class="fade-in">Cleo - 10</li>
+                <li class="fade-in">Cub - 247</li>
+                <li class="fade-in">Impulse - 206</li>
+                <li class="fade-in">xB - 182</li>
+                <li class="fade-in">Etho - 128</li>
             </ol>
         </div>
         <div id="treemap">
 
         </div>
+        <div id="tree-exp" class="expText">
+            <div id="tree-exp-text" class="explainer">
+                <h3>What do Hermits spend their diamonds on?</h3>
+            This diagram shows how many diamonds each category of transaction was responsible for. Books and Building Blocks seem to be the bedrock of Hermit economy with Rockets and Shulkers on a massive SMP also being necessary and cash cows. 
+        </div>
+    </div>
+    <div id="pie-exp" class="expText">
+        <div id="pie-exp-text" class="explainer">
+            <h3>Where do Hermits spend their diamonds?</h3>
+            This simple pie chart demonstrates the amount of diamonds spend at each store as well as how many diamonds were directly transferred between Hermits. The other cateogry being so large indicates a strong prescence of small and unique businesses that make a few dozen diamonds 
+        </div>
+    </div> 
         <div id="pie"></div>
         <div id="pyramid">
             <div id="pyramid-header">
             <h3 id="pyramid-stream">On Stream</h3>
             <h3 id="pyramid-video">In videos</h3></div>
         </div>
-        <div id="pyramid-text">
-            <h1>Where do Hermits spend their money anyway?</h1>
+        <div id="pyramid-text" class="expText">
+            <div id="pyramid-text-text" class="explainer">
+            <h3>When do Hermits spend their diamonds?</h3>
             This pyramid graph is a visualisation of where hermits spend their diamonds, in terms of on stream or in videos according to our tracking. Each hermit has 2 bars, one representing what percent of their total diamonds spend were on stream and how many were in a video. 
+        </div>
+        </div>
+        <div id="racing-text" class="expText">
+            <div id="racing-text-text" class="explainer">
+                <h3>How did the Hermits' fortune form over time?</h3>
+                In this racing bar chart we can clearly see the progression of the hermit's fortune over the course of the season from sales at their shops by month.
+        </div>
+        </div>
+        <div id="racing-bar">
+            Culmulative shop profits over time
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -72,7 +95,7 @@
         <script Content-Type="text/javascript" src="./assets/js/treemap.js"></script>
         <script Content-Type="text/javascript" src="./assets/js/pie.js"></script>
         <script Content-Type="text/javascript" src="./assets/js/pyramid.js"></script>
-        <!-- <script Content-Type="text/javascript" src="./assets/js/BarChartRace.js"></script> -->
+        <script Content-Type="text/javascript" src="./assets/js/BarChartRace.js"></script>
         <!-- <script src="spanky.js"></script> -->
 
 </body>

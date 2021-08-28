@@ -182,3 +182,7 @@ clear:both;
 .tick{
   font-size: 1vw;
 }
+
+#racing-bar .tick{
+  font-size:.65vw;
+}

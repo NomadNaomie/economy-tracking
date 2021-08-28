@@ -1,7 +1,6 @@
 node_modules/
 assets/data/*
 *.json
-BarChartRace.js
 arc.js
 network.js
 pyramid.js
