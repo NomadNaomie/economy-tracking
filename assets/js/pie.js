@@ -55,8 +55,8 @@ const data = {
 };
 
 //var for the colour scheme for pie slices
-const pie_color = d3.scaleOrdinal()
-  .range(d3.schemeSet5);
+var color = d3.scaleOrdinal()
+.range(d3.schemeCategory10);
 
 //Create a pie D3 object, the value is [1] of the data, [0] is the name of the shop  
 const pie = d3.pie()
@@ -74,7 +74,7 @@ pie_svg
   .data(data_ready)
   .join('path')
     .attr('d', arcGenerator)
-    .attr('fill', function(d){ return(color(d.data[0])) })
+    .attr('fill', function(d){ return(color(d.index)) })
     .attr("stroke", "black")
     .style("stroke-width", "2px")
     .style("opacity", 0.7)
@@ -93,7 +93,7 @@ pie_svg
     d.angle = (d.endAngle + d.startAngle) / 2
     if (d.angle == NaN) { return "rotate(270)" }
     var finalRot = ""
-    if ((d.angle * 180 / Math.PI - 90) < 0) { finalRot = "rotate(90)" } else if ((d.angle * 180 / Math.PI - 90) > 90) { finalRot = "rotate(180)" } else { finalRot = "rotate(0)" }
+    if ((d.angle * 180 / Math.PI - 90) < 0) { finalRot = "rotate(15)" } else if ((d.angle * 180 / Math.PI - 90) > 90) { finalRot = "rotate(180)" } else { finalRot = "rotate(0)" }
     return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")" +
         "translate(" + (175) + ")" +
         finalRot
