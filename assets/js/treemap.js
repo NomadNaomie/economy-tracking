@@ -6,11 +6,13 @@
 */
 
 //Object for the bounds and dimensions of the SVG
-const tree_margin = {top: 10, right: 10, bottom: 10, left: 10},
-  tree_width = 700 - tree_margin.left - tree_margin.right,
+const tree_margin = {top: 10, right: 20, bottom: 10, left: 10},
+  tree_width = 1700 - tree_margin.left - tree_margin.right,
   tree_height = 850 - tree_margin.top - tree_margin.bottom;
 //Whether we are in the top level of not.
 var treemode = false;
+var treeMapColor = d3.schemeCategory10.concat(d3.schemeDark2);
+var rootMapColor = d3.schemeDark2;
 //Grabs the div with the id of treemap and creates a new SVG inside of it
 const tree_svg = d3.select("#treemap")
 .append("svg")
@@ -52,7 +54,8 @@ d3.json("/assets/data/treemap.json").then(function(data) {
       .attr("district", function(d) {return d.data.name })
       .attr('id','tree-rect')
       .style("stroke", "black")
-      .style("fill", function(d) { return "rgb(0, 0, " + (d.data.value % 2500) + ")"; })
+      .style("fill", function(d) {return rootMapColor[d.data.index]})
+
 
   //Adding labels to each leaf rect with the category and number of diamonds
   tree_svg
@@ -61,9 +64,20 @@ d3.json("/assets/data/treemap.json").then(function(data) {
     .join("text")
       .attr("x", function(d){ return d.x0+5})
       .attr("y", function(d){ return d.y0+20})
-      .text(function(d){ return d.data.name + " - " + d.data.value})
-      .attr("font-size", "15px")
+      .text(function(d){ return d.data.name +  " - " + d.data.value + " diamonds"})
+      .attr("font-size", "16px")
       .attr("fill", "white")
+    // tree_svg
+    // .selectAll("vals")
+    // .data(root.leaves())
+    // .enter()
+    // .insert("text")
+    //   .attr("x", function(d){ return d.x0+5})    // +10 to adjust position (more right)
+    //   .attr("y", function(d){ return d.y0+35})    // +20 to adjust position (lower)
+    //   .text(function(d){ return d.data.value })
+    //   .attr("font-size", "11px")
+    //   .attr("fill", "white")
+      
 
   //When clicked transform the leaves into their children
   tree_svg
@@ -88,7 +102,7 @@ d3.json("/assets/data/treemap.json").then(function(data) {
           .attr("district", function(d) {return d.data.name })
           .attr('id','tree-rect')
           .style("stroke", "black")
-          .style("fill", function(d) { return "rgb(0, 0, " + (d.data.value % 2500) + ")"; })
+          .style("fill", function(d) { return rootMapColor[d.data.index]})
 
       tree_svg
         .selectAll("text")
@@ -98,18 +112,34 @@ d3.json("/assets/data/treemap.json").then(function(data) {
         .duration(1000)
           .attr("x", function(d){ return d.x0+5})
           .attr("y", function(d){ return d.y0+20})
-          .text(function(d){ return d.data.name + " - " + d.data.value})
-          .attr("font-size", "15px")
+          .text(function(d){
+          //   if (d.data.name == "Octagon Derpcoin ATM" || d.data.name == "Evil Emporium Derpcoin Spinner " || d.data.name == "Cheapslate" || d.data.name=="Potato vending Machine" || d.data.name=="Octagon Derpcoin ATM"){
+          //     return "..."
+          //   }else{
+              return d.data.name +  " - " + d.data.value + " diamonds"})
+            // }
+          .attr("font-size", "16px")
           .attr("fill", "white")
-          .transition()
-          .duration(1000)
+      // tree_svg
+      // .selectAll("vals")
+      // .data(root.leaves())
+      // .enter()
+      // .insert("text")
+      // .transition()
+      // .duration(1000)
+      //   .attr("x", function(d){ return d.x0+5})    // +10 to adjust position (more right)
+      //   .attr("y", function(d){ return d.y0+35})    // +20 to adjust position (lower)
+      //   .text(function(d){ return d.data.value })
+      //   .attr("font-size", "11px")
+      //   .attr("fill", "white")
+        
       }
       else{
         treemode=true;
       let filterkey = d.target.attributes.district.value;
       console.log(filterkey)
       newData = data.children.filter(function(d){return d.name == filterkey})
-      let newRoot = d3.hierarchy({children:newData[0].children}).sum(function(d){console.log(d);return d.value})
+      let newRoot = d3.hierarchy({children:newData[0].children}).sum(function(d){console.log(d);return d.value + 10})
       let newTreemapObject = d3.treemap()
         .size([tree_width, tree_height])
         .padding(3)
@@ -127,7 +157,7 @@ d3.json("/assets/data/treemap.json").then(function(data) {
           .attr("district", function(d) {return d.data.name })
           .attr('id','tree-rect')
           .style("stroke", "black")
-          .style("fill", function(d) { return "rgb(0, 0, " + (d.data.value % 2500) + ")"; })
+          .style("fill", function(d) { return treeMapColor[d.data.index]})
 
       tree_svg
         .selectAll("text")
@@ -136,12 +166,66 @@ d3.json("/assets/data/treemap.json").then(function(data) {
         .transition()
         .duration(1000)
           .attr("x", function(d){ return d.x0+5})
-          .attr("y", function(d){ return d.y0+20})
-          .text(function(d){ return d.data.name + " - " + d.data.value})
-          .attr("font-size", "15px")
+          .attr("y", function(d){ 
+            console.log(d)
+            for (shops of data.children[1].children){ //Octagon
+              console.log(shops)
+              if (d.data.name == shops.name){
+                console.log("Hallulyuhas")
+                return d.y0+30
+            }
+            }return d.y0+20})
+          .style("text-anchor", "start")
+          .text(function(d){
+            // if (d.data.name == "Vol-Carb-o" ||d.data.name == "Bee Shop" || d.data.name == "Octagon Derpcoin ATM" || d.data.name == "Evil Emporium Derpcoin Spinner " || d.data.name == "Cheapslate" || d.data.name=="Potato vending Machine" || d.data.name=="Octagon Derpcoin ATM"){
+            //   return "..."
+            // }else{
+              return d.data.name +  " - " + d.data.value
+            // }
+          })
+
+          .attr("font-size", function(d){
+            for (shops of data.children[0].children){ //Boatem
+              if (d.data.name == shops.name){
+                return "16px"
+            }
+          }
+          for (shops of data.children[1].children){ //Octagon
+            if (d.data.name == shops.name){
+              return "30px"
+          }
+        }
+        for (shops of data.children[2].children){ //Big Eyes
+          if (d.data.name == shops.name){
+            return "16px"
+        }
+      }
+      for (shops of data.children[3].children){ //Evil
+        if (d.data.name == shops.name){
+          return "16px"
+      }
+    }
+    for (shops of data.children[4].children){ //HHF
+      if (d.data.name == shops.name){
+        return "22px"
+    }
+  }
+            return "18px";
+          })
           .attr("fill", "white")
-          .transition()
-          .duration(1000)
+
+          // tree_svg
+          // .selectAll("vals")
+          // .data(root.leaves())
+          // .enter()
+          // .insert("text")
+          // .transition()
+          // .duration(1000)
+          //   .attr("x", function(d){ return d.x0+5})    // +10 to adjust position (more right)
+          //   .attr("y", function(d){ return d.y0+35})    // +20 to adjust position (lower)
+          //   .text(function(d){ return d.data.value })
+          //   .attr("font-size", "11px")
+          //   .attr("fill", "white")
       }
   })
 })

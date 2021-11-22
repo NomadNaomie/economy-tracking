@@ -7,7 +7,7 @@ import os
 import json
 import datetime
 
-csvfile = open('../assets/data/ledger.csv', 'r', newline='')
+csvfile = open(os.getcwd()+'/assets/data/ledger.csv', 'r', newline='')
 payers = {}
 payees = {}
 data = {
@@ -31,9 +31,9 @@ for row in csvfile:
         except Exception as E:
             pass
 
-with open("../assets/data/sankey.json","w") as outfile:
-    outfile.write(json.dumps(data, indent=4))
-    print("Sankey JSON saved to disk")
+# with open(os.getcwd()+"/assets/data/sankey.json","w") as outfile:
+#     outfile.write(json.dumps(data, indent=4))
+#     print("Sankey JSON saved to disk")
 
 del data
 del payers
@@ -65,9 +65,9 @@ for hermit in hermits:
     i+=5
     data.append({"name":hermit,"medium":"stream", "amount":streamTotal[hermit], "index":i})
     data.append({"name":hermit,"medium":"video", "amount":videoTotal[hermit],"index":i})
-with open("../assets/data/pyramid.json","w") as outfile:
-    outfile.write(json.dumps(data, indent=4))
-    print("Pyramid JSON saved to disk")
+# with open(os.getcwd()+"/assets/data/pyramid.json","w") as outfile:
+#     outfile.write(json.dumps(data, indent=4))
+#     print("Pyramid JSON saved to disk")
 
 del data
 del streamTotal
@@ -89,6 +89,86 @@ for row in csvfile:
         running_total[row_arr[3]] += float(row_arr[2])
         data[month_year_str][hermits.index(row_arr[3])]["Total"] += float(row_arr[2])
 
-with open("../assets/data/racing_bars.json","w") as outfile:
-    outfile.write(json.dumps(data, indent=4))
-    print("Transactions JSON saved to disk")
+# with open(os.getcwd()+"/assets/data/racing_bars.json","w") as outfile:
+#     outfile.write(json.dumps(data, indent=4))
+#     print("Transactions JSON saved to disk")
+csvfile.seek(0)
+data = {}
+for row in csvfile:
+    row_arr = row.split(',')
+    if row_arr[1] != 'Payer' and row_arr[1]!="":
+        shop = row_arr[4]
+        if (shop == "Octagon" and "log" in row_arr[8].lower()):
+            shop = "Logz"
+        if (shop == "Horse Head Farms" and "iou" in row_arr[8].lower()):
+            shop = "IOU"
+        if shop not in data:
+            data[shop] = float(row_arr[2])
+        else:
+            data[shop] += float(row_arr[2])
+
+
+masterData = {
+    "children":[
+        {"name":"Boatem",
+            "children":[
+                {"name":"G-Train","value":round(data["G-Train"])},
+                {"name":"Potato vending Machine","value":round(data["Potato Vending Machine"])},
+                {"name":"iSoar","value":round(data["iSoar"])},
+                {"name":"Padllama Co.","value":round(data["Padllama Co."])},
+                {"name":"Harmless Harvests","value":round(data["Harmless Harvests"])},
+                {"name":"Bee Shop","value":round(data["Bee Shop"])},
+                {"name":"iFloatem","value":round(data["iFloatem"])},
+                {"name":"Swaggon","value":round(data["Swaggon"])},
+                {"name":"Lichen Subscribe","value":round(data["Lichen Subscribe"])},
+                {"name":"Nether Wood iEver","value":round(data["Impulse's Nether Wood iEver"])},
+                {"name":"Cheapslate","value":round(data["Cheapslate"])},
+                {"name":"iCandy","value":round(data["iCandy"])},
+                {"name":"Vol-Carb-o","value":round(data["Vol-Carb-o"])},
+                {"name":"Shopwreck","value":round(data["Shopwreck"])},
+
+            ]
+        },
+        {
+            "name":"Octagon",
+            "children":[
+                {"name":"Shulker Walker","value":round(data["Shulker Walker"])},
+                {"name":"Octagon","value":round(data["Octagon"])},
+                {"name":"Derpcoin ATM","value":round(data["Octagon Derpcoin ATM"])/2},
+                {"name":"Logz","value":round(data["Logz"])},
+            ]
+        },
+        {
+            "name":"Big Eyes",
+            "children":[
+                {"name":"Big Eyes Pass N Gas","value":round(data["Big Eyes Pass N Gas"])},
+                {"name":"Basalt","value":round(data["Big Eyes Basalt"])},
+                {"name":"Copper n Candles","value":round(data["Copper n Candles"])},
+            ]
+        },
+        {
+            "name":"Evil Emporium",
+            "children":[
+                {"name":"Evil Emporium","value":round(data["Evil Emporium"])},
+                {"name":"Derpcoin Spinner ","value":round(data["Evil Gambling"])},
+                {"name":"Derpcoin ATM","value":round(data["Octagon Derpcoin ATM"])/2},
+            ]
+        },
+        {
+            "name":"Horse Head Farms",
+            "children":[
+                {"name":"Horse Head Farms","value":round(data["Horse Head Farms"])},
+                {"name":"IOU Auction","value":round(data["IOU"])},
+            ]
+        },
+    ]
+}
+with open(os.getcwd()+"/assets/data/treemapN.json","w") as outfile:
+    for districts in masterData["children"]:
+        districtSum = 0
+        print(districts)
+        for hermit in districts["children"]:
+            print(hermit)
+            districtSum += hermit["value"]
+        districts["value"]=districtSum
+    outfile.write(json.dumps(masterData, indent=4))

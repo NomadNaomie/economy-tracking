@@ -40,7 +40,9 @@
 }
 #tree-rect{
   margin:2vw;
+  border-radius: 5%;
 }
+
 #sankey-payer {
   float: left;
   margin-left: 12vw;
@@ -150,10 +152,10 @@ body {
   width: 50%;
 }
 
-html {
+/* html {
   -ms-overflow-style: none;
   scrollbar-width: none;
-}
+} */
 
 html::-webkit-scrollbar {
   display: none;
