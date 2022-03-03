@@ -7,7 +7,7 @@
 
 //Object for the bounds and dimensions of the SVG
 const tree_margin = {top: 10, right: 20, bottom: 10, left: 10},
-  tree_width = 1700 - tree_margin.left - tree_margin.right,
+  tree_width = 700 - tree_margin.left - tree_margin.right,
   tree_height = 850 - tree_margin.top - tree_margin.bottom;
 //Whether we are in the top level of not.
 var treemode = false;
@@ -187,17 +187,17 @@ d3.json("/assets/data/treemap.json").then(function(data) {
           .attr("font-size", function(d){
             for (shops of data.children[0].children){ //Boatem
               if (d.data.name == shops.name){
-                return "16px"
+                return "12px"
             }
           }
           for (shops of data.children[1].children){ //Octagon
             if (d.data.name == shops.name){
-              return "30px"
+              return "14px"
           }
         }
         for (shops of data.children[2].children){ //Big Eyes
           if (d.data.name == shops.name){
-            return "16px"
+            return "12px"
         }
       }
       for (shops of data.children[3].children){ //Evil
@@ -207,7 +207,7 @@ d3.json("/assets/data/treemap.json").then(function(data) {
     }
     for (shops of data.children[4].children){ //HHF
       if (d.data.name == shops.name){
-        return "22px"
+        return "10px"
     }
   }
             return "18px";

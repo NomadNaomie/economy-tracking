@@ -35,7 +35,7 @@ d3.json("/assets/data/racing_bars.json").then(function(bar_data){
   let data = bar_data[keys[0]];
   //setting the X axis
   const x = d3.scaleLinear()
-  .domain([0, 400]) //This needs to be increased porportional to the max value of the data
+  .domain([0, 1200]) //This needs to be increased porportional to the max value of the data
   .range([ 0, width]);
 
 //Tick labels of the hermits name
@@ -85,7 +85,7 @@ racing_svg.append("g")
     update(data);
     time_frame.innerHTML = `End of ${keys[0]}`; //Updating the time frame text to indicate which End of month-year we are on
     keys.shift(); //Removing the used month-year from the keys
-  }, 2500); //2500 default, subject to change
+  }, 4500); //2500 default, subject to change
   function update(data) {
     /*
     *  U grabs the bars, conforming them to the next data set passed from the interval function
@@ -98,7 +98,7 @@ racing_svg.append("g")
       .append("rect")
       .merge(u)
       .transition()
-      .duration(1000)
+      .duration(600)
       .attr("x", x(0) )
       .attr("y", d => y(d.Hermit) )
       .attr("width", d => x(d.Total))
@@ -118,7 +118,7 @@ racing_svg.append("g")
     .classed("bar-value", true)
     .merge(t)
     .transition()
-    .duration(1000).attr("transform", d => `translate(${x(d.Total)}, ${y(d.Hermit)+15})`) //Should conform to Value labels for bars above
+    .duration(600).attr("transform", d => `translate(${x(d.Total)}, ${y(d.Hermit)+15})`) //Should conform to Value labels for bars above
     .style("text-anchor", "start")
     .text(function(d) { return d.Total; })
     .style("fill", "#ffffff").style("opacity",1);

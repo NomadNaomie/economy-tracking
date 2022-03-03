@@ -14,6 +14,7 @@ data = {
     "nodes":[],
     "links":[]
 }
+transactions = []
 id = 0
 for row in csvfile:
     row_arr = row.split(',')
@@ -27,13 +28,20 @@ for row in csvfile:
             data['nodes'].append({"node":id,"name":row_arr[3]})
             id += 1
         try:
-            data['links'].append({"source": payers[row_arr[1]], "target": payees[row_arr[3]], "value": float(row_arr[2])})
+            transactions.append({"source":payers[row_arr[1]],"target":payees[row_arr[3]],"value":float(row_arr[2])})
+            # data['links'].append({"source": payers[row_arr[1]], "target": payees[row_arr[3]], "value": float(row_arr[2])})
         except Exception as E:
             pass
-
-# with open(os.getcwd()+"/assets/data/sankey.json","w") as outfile:
-#     outfile.write(json.dumps(data, indent=4))
-#     print("Sankey JSON saved to disk")
+for t in transactions:
+    for l in data['links']:
+        if l['source'] == t['source'] and l['target'] == t['target']:
+            l['value'] += t['value']
+            break
+    else:
+        data['links'].append(t)
+with open(os.getcwd()+"/assets/data/sankey.json","w") as outfile:
+    outfile.write(json.dumps(data, indent=4))
+    print("Sankey JSON saved to disk")
 
 del data
 del payers
@@ -55,9 +63,9 @@ for row in csvfile:
             streamTotal[row_arr[3]] = 0
             videoTotal[row_arr[3]] = 0
         if row_arr[6] == "Stream":
-            streamTotal[row_arr[1]] = float(row_arr[2])
+            streamTotal[row_arr[1]] += float(row_arr[2])
         else:
-            videoTotal[row_arr[1]] = float(row_arr[2])
+            videoTotal[row_arr[1]] += float(row_arr[2])
 
 data = []
 i = 0
@@ -65,13 +73,45 @@ for hermit in hermits:
     i+=5
     data.append({"name":hermit,"medium":"stream", "amount":streamTotal[hermit], "index":i})
     data.append({"name":hermit,"medium":"video", "amount":videoTotal[hermit],"index":i})
-# with open(os.getcwd()+"/assets/data/pyramid.json","w") as outfile:
-#     outfile.write(json.dumps(data, indent=4))
-#     print("Pyramid JSON saved to disk")
+with open(os.getcwd()+"/assets/data/pyramid.json","w") as outfile:
+    outfile.write(json.dumps(data, indent=4))
+    print("Pyramid JSON saved to disk")
 
 del data
 del streamTotal
 del videoTotal
+
+
+hermits = []
+spendTotal = {}
+earnTotal = {}
+csvfile.seek(0)
+for row in csvfile:
+    row_arr = row.split(',')
+    if row_arr[1] != 'Payer' and row_arr[1]!="": # Ignore the header row
+        if row_arr[1] not in hermits and row_arr[3] != '':
+            hermits.append(row_arr[1])
+            spendTotal[row_arr[1]] = 0
+            earnTotal[row_arr[1]] = 0
+        if row_arr[3] not in hermits and row_arr[1] != '':
+            hermits.append(row_arr[3])
+            spendTotal[row_arr[3]] = 0
+            earnTotal[row_arr[3]] = 0
+        spendTotal[row_arr[1]] += float(row_arr[2])
+        earnTotal[row_arr[3]] += float(row_arr[2])
+
+data = []
+i = 0
+for hermit in hermits:
+    i+=5
+    data.append({"name":hermit,"medium":"spend", "amount":spendTotal[hermit], "index":i})
+    data.append({"name":hermit,"medium":"receive", "amount":earnTotal[hermit],"index":i})
+with open(os.getcwd()+"/assets/data/spendvsreceive.json","w") as outfile:
+    outfile.write(json.dumps(data, indent=4))
+    print("Spend vs Receive JSON saved to disk")
+
+
+
 
 data = {}
 running_total = dict.fromkeys(hermits, 0)
@@ -86,12 +126,12 @@ for row in csvfile:
             data[month_year_str] = []
             for hermit in hermits:
                 data[month_year_str].append({"Hermit":hermit,"Total":running_total[hermit]})
-        running_total[row_arr[3]] += float(row_arr[2])
-        data[month_year_str][hermits.index(row_arr[3])]["Total"] += float(row_arr[2])
+        running_total[row_arr[3]] += round(float(row_arr[2]))
+        data[month_year_str][hermits.index(row_arr[3])]["Total"] += round(float(row_arr[2]))
 
-# with open(os.getcwd()+"/assets/data/racing_bars.json","w") as outfile:
-#     outfile.write(json.dumps(data, indent=4))
-#     print("Transactions JSON saved to disk")
+with open(os.getcwd()+"/assets/data/racing_bars.json","w") as outfile:
+    outfile.write(json.dumps(data, indent=4))
+    print("Transactions JSON saved to disk")
 csvfile.seek(0)
 data = {}
 for row in csvfile:
@@ -166,9 +206,63 @@ masterData = {
 with open(os.getcwd()+"/assets/data/treemapN.json","w") as outfile:
     for districts in masterData["children"]:
         districtSum = 0
-        print(districts)
         for hermit in districts["children"]:
-            print(hermit)
             districtSum += hermit["value"]
         districts["value"]=districtSum
     outfile.write(json.dumps(masterData, indent=4))
+
+csvfile.seek(0)
+data = {}
+for row in csvfile:
+    row_arr = row.split(',')
+    if row_arr[1] != 'Payer' and row_arr[1]!="":
+        shop = row_arr[4]
+        if shop in data:
+            data[shop] += float(row_arr[2])
+        else:
+            data[shop] = float(row_arr[2])
+
+mirrorData = {}
+otherSum = 0
+for shop in data:
+    if data[shop] > 0:
+        mirrorData[shop] = round(data[shop])
+    else:
+        otherSum += data[shop]
+
+mirrorData["Other"] = round(otherSum)
+with open(os.getcwd()+"/assets/data/shop_totals.json","w") as jsonf:
+    jsonf.write(json.dumps(mirrorData, indent=4))
+    print("Shop Totals JSON saved to disk")
+
+csvfile.seek(0)
+
+data = {}
+for row in csvfile:
+    row_arr = row.split(',')
+    if row_arr[1] != 'Payer' and row_arr[1]!="":
+        if row_arr[7].split("-")[1] not in data:
+            data[row_arr[7].split("-")[1]]=float(row_arr[2])
+        else:
+            data[row_arr[7].split("-")[1]]+=float(row_arr[2])
+            
+            
+csvfile.seek(0)
+data = 0
+i=0
+rows=[]
+for row in csvfile:
+    rows.append(row)
+
+for row_i in range(len(rows)):
+    row_arr=rows[row_i].split(',')
+    prev_arr = rows[row_i-1].split(',')
+    if row_arr[2] != "Amount (Diamonds)" and row_arr[2] != "":
+     if row_arr[1] == prev_arr[1] and row_arr[4] == prev_arr[4] and row_arr[2] == prev_arr[2]:
+        data+= float(row_arr[2])
+     else:
+        data+=float(row_arr[2])
+        i+=1
+
+print(data)
+print(i)

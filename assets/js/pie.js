@@ -21,38 +21,17 @@ const pie_svg = d3.select("#pie")
 
 //Data from ledger, commented out shops are moved into "other"
 const data = {
-  "Direct":	339,
-"G-Train":	331,
-// "@JoeHills' Flower Stalls":	9,
-"Copper n Candles":	100,
-// "Potato Vending Machine":	7,
-"iSoar":	121,
-// "Slimeblock Casino":	16,
-// "Glow Inc":	21,
-// "Moss Inc":	12,
-// "Wels Popup Shop":	10,
-// "Lichen Subscribe":	0,
-"Big Eyes Pass N Gas":290,
-"The Book Nook":	63,
-"Padllama Co":61,
-// "Tree Trunk":	1,
-"Harmless Harvests":	55,
-// "Bee Shop":	12,
-"iFloatem":	51,
-// "Market Stalls":	15,
-"Evil Emporium":	87,
-// "Hive-DR8":	0,
-"Shulker Box":	123,
-"Swaggon":	66,
-// "Shopwreck":	34,
-// "Prismarine Shop":	28,
-// "UFO Shop":	7,
-"Tay's Trees":	54,
-// "YWC":	18,
-// "Shulker Walker":	9,
-// "Cool Corner":	4,
-"Other":0+0+1+4+7+7+9+9+10+12+12+15+16+18+21+28+34,
-};
+  "Direct": 1042,
+  "G-Train": 1024,
+  "Big Eyes Pass N Gas": 309,
+  "Padllama Co.": 290,
+  "Evil Emporium": 391,
+  "Shulker Box": 527,
+  "Swaggon": 303,
+  "Horse Head Farms": 526,
+  "iCandy": 179,
+  "Octagon": 186,
+  "Other": 1161+125+139}
 
 //var for the colour scheme for pie slices
 var color = d3.scaleOrdinal()
@@ -88,14 +67,14 @@ pie_svg
   .selectAll('mySlices')
   .data(data_ready)
   .join('text')
-  .text(function(d){ return d.data[0] + ` - ${Math.round((d.data[1] / 1850)*100)}%`})
+  .text(function(d){ return d.data[0] + ` - ${Math.round((d.data[1] / 6202)*100)}%`})
   .attr('transform', function(d) {
     d.angle = (d.endAngle + d.startAngle) / 2
     if (d.angle == NaN) { return "rotate(270)" }
     var finalRot = ""
     if ((d.angle * 180 / Math.PI - 90) < 0) { finalRot = "rotate(15)" } else if ((d.angle * 180 / Math.PI - 90) > 90) { finalRot = "rotate(180)" } else { finalRot = "rotate(0)" }
     return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")" +
-        "translate(" + (175) + ")" +
+        "translate(" + (190) + ")" +
         finalRot
 })  .style("text-anchor", "middle")
-  .style("font-size", 17)
+  .style("font-size", 15)

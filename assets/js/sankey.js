@@ -49,7 +49,7 @@ d3.json("/assets/data/sankey.json").then(function (sankeydata) {
         .enter().append("path")
         .attr("class", "link")
         .attr("d", d3.sankeyLinkHorizontal())
-        .attr("stroke-width", function (d) { return Math.max(1, d.value < 80 ? d.value / 2 : 40) })
+        .attr("stroke-width", function (d) { return Math.max(1, d.value < 240 ? d.value / 4 : 60) })
     //Adding the hover text to each ribbon
     link.append("title")
         .text(function (d) {
@@ -75,7 +75,7 @@ d3.json("/assets/data/sankey.json").then(function (sankeydata) {
         .style("fill", function (d) { return d.color = color(d.name.replace(/ .*/, "")); })
         .style("stroke", function (d) { return d3.rgb(d.color).darker(2); })
         .attr("transform", function (d) {
-            return "translate(" + d.x0 + "," + d.y0 + ")";
+            return "translate(" + d.x0 + "," + (d.y0) + ")";
         });
 
     //Attaching hermit names to their respective nodes
@@ -101,18 +101,18 @@ function dragmove(evt, d) {
     *   if the box would exceed the height or < 0, it is set to the last valid Y value
     *   
     */
-    var rectY = d3.select(this).select("rect").attr("height");
-    d.y0 = d.y0 + evt.dy;
-    d.x1 = d.x1 + 0;
-    d.x0 = d.x0 + 0;
-    var yTranslate = (d.y0-d.y1)+parseInt(rectY);
-    if (d.y1+yTranslate > height || d.y0 < 0) {
-        yTranslate = last_valid_y;
-    }else{
-        link.attr('d', d3.sankeyLinkHorizontal());
-        last_valid_y = yTranslate;
-    }
-    var xTranslate = 0;
-    d3.select(this).attr('transform', "translate(" + (xTranslate) + "," + (yTranslate) + ")");
-    sankey.update(graph);
+    // var rectY = d3.select(this).select("rect").attr("height");
+    // d.y0 = d.y0 + evt.dy;
+    // d.x1 = d.x1 + 0;
+    // d.x0 = d.x0 + 0;
+    // var yTranslate = (d.y0-d.y1)+parseInt(rectY);
+    // if (d.y1+yTranslate > height || d.y0 < 0) {
+    //     yTranslate = last_valid_y;
+    // }else{
+    //     link.attr('d', d3.sankeyLinkHorizontal());
+    //     last_valid_y = yTranslate;
+    // }
+    // var xTranslate = 0;
+    // d3.select(this).attr('transform', "translate(" + (xTranslate) + "," + (yTranslate) + ")");
+    // sankey.update(graph);
 }
